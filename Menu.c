@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "Menu.h"
 
 // Store Information
 struct Contact
@@ -12,8 +13,11 @@ struct Contact
 };
 
 // Display Stuffs-------------------------------------------------------------------------------
-void DisplayLoginMenu()
+void DisplayLoginMenu(int state)
 {
+    
+    uState = LoginMenu;
+
     printf("\t\t\t\t- - - - - - - - - - - - - \n");
     printf("\t\t\t\tCONTACT MANAGEMENT SYSTEM\n");
     printf("\t\t\t\t- - - - - - - - - - - - - \n\n");
@@ -23,8 +27,10 @@ void DisplayLoginMenu()
     printf("2. Register\n");
 }
 
-void DisplayAdminMenu()
+void DisplayAdminMenu(int state)
 {
+    uState = AdminMenu;
+
     system("cls");
 
     printf("1. Create New Contact\n");
@@ -36,8 +42,10 @@ void DisplayAdminMenu()
     printf("7. Exit\n");
 }
 
-void DisplayUserMenu()
+void DisplayUserMenu(int state)
 {
+     uState = BasicMenu;
+
     system("cls");
 
     printf("1. Search Contacts\n");

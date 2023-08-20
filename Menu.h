@@ -1,3 +1,8 @@
+static enum UserState {
+    LoginMenu,
+    AdminMenu,
+    BasicMenu
+} uState;
 
 void DisplayLoginMenu();
 

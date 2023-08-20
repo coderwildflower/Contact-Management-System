@@ -13,19 +13,14 @@ struct userData
 
 int totalUsers = 0;
 
-enum UserState
-{
-    Admin,
-    Basic
-} _state;
-
 void LoginUser();
 void RegisterUser();
 //------------------------
 
 // Function Prototype-----------------
-void GetInput_LoginMenu(int num);
-void GetInput_AdminMenu(int num);
+void GetInput_LoginMenu(int);
+void GetInput_AdminMenu(int);
+void GetInput_UserMenu(int);
 void GetInput();
 
 //*********************************************************MAIN FUNCTION*************************************************************************************//
@@ -42,7 +37,7 @@ int main()
 void RegisterUser()
 {
     system("cls");
-
+  
     printf("\t\t\t\tREGISTER USER\n");
 
     FILE *file_W;
@@ -100,8 +95,10 @@ void LoginUser()
         if (strcmp(uData.userName, temp_name) == 0 && strcmp(uData.password, temp_pw) == 0)
         {
             printf("Login Successful!\n");
-            fflush(stdout);
+            fflush(stdin);
             DisplayAdminMenu();
+
+            GetInput();
         }
     }
     printf("Login Failed!!!");
@@ -112,7 +109,17 @@ void GetInput()
 {
     int num;
     scanf("%d", &num);
-    GetInput_LoginMenu(num);
+
+    if (uState == LoginMenu)
+    {
+        GetInput_LoginMenu(num);
+    }
+    else if (uState == AdminMenu)
+    {
+        GetInput_AdminMenu(num);
+    }
+    else
+        GetInput_UserMenu(num);
 }
 
 void GetInput_LoginMenu(int num)
@@ -154,6 +161,25 @@ void GetInput_AdminMenu(int num)
     case 6:
         DisplayAllContacts();
     case 7:
+        ExitApplication();
+        break;
+
+    default:
+        printf("Please Enter Valid Option");
+        break;
+    }
+}
+
+void GetInput_UserMenu(int num)
+{
+    switch (num)
+    {
+    case 1:
+        SearchContact();
+        break;
+    case 2:
+        DisplayAllContacts();
+    case 3:
         ExitApplication();
         break;
 
