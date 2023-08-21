@@ -13,11 +13,9 @@ struct Contact
 };
 
 // Display Stuffs-------------------------------------------------------------------------------
-void DisplayLoginMenu(int state)
+void DisplayLoginMenu()
 {
-    
-    uState = LoginMenu;
-
+  
     printf("\t\t\t\t- - - - - - - - - - - - - \n");
     printf("\t\t\t\tCONTACT MANAGEMENT SYSTEM\n");
     printf("\t\t\t\t- - - - - - - - - - - - - \n\n");
@@ -25,12 +23,12 @@ void DisplayLoginMenu(int state)
 
     printf("1. Login\n");
     printf("2. Register\n");
+
 }
 
-void DisplayAdminMenu(int state)
+void DisplayAdminMenu()
 {
-    uState = AdminMenu;
-
+  
     system("cls");
 
     printf("1. Create New Contact\n");
@@ -42,10 +40,8 @@ void DisplayAdminMenu(int state)
     printf("7. Exit\n");
 }
 
-void DisplayUserMenu(int state)
+void DisplayUserMenu()
 {
-     uState = BasicMenu;
-
     system("cls");
 
     printf("1. Search Contacts\n");
@@ -133,4 +129,62 @@ void ExitApplication()
     system("cls");
 
     printf("\t\tExit Menu\n");
+}
+
+//------------------------------------------------------------HANDLE USER INPUT---------------------------------------------------------------
+
+void GetInput_AdminMenu()
+{
+    int num;
+    scanf("%d",&num);
+
+    switch (num)
+    {
+    case 1:
+        CreateContact();
+        break;
+    case 2:
+        EditContact();
+        break;
+    case 3:
+        RemoveContact();
+        break;
+    case 4:
+        RemoveAllContacts();
+        break;
+    case 5:
+        SearchContact();
+        break;
+    case 6:
+        DisplayAllContacts();
+    case 7:
+        ExitApplication();
+        break;
+
+    default:
+        printf("Please Enter Valid Option");
+        break;
+    }
+}
+
+void GetInput_UserMenu()
+{
+    int num;
+    scanf("%d",&num);
+
+    switch (num)
+    {
+    case 1:
+        SearchContact();
+        break;
+    case 2:
+        DisplayAllContacts();
+    case 3:
+        ExitApplication();
+        break;
+
+    default:
+        printf("Please Enter Valid Option");
+        break;
+    }
 }

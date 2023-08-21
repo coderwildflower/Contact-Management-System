@@ -1,8 +1,3 @@
-static enum UserState {
-    LoginMenu,
-    AdminMenu,
-    BasicMenu
-} uState;
 
 void DisplayLoginMenu();
 
@@ -23,3 +18,7 @@ void SearchContact();
 void DisplayAllContacts();
 
 void ExitApplication();
+
+void GetInput_AdminMenu();
+
+void GetInput_UserMenu();

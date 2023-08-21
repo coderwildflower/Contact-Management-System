@@ -18,18 +18,14 @@ void RegisterUser();
 //------------------------
 
 // Function Prototype-----------------
-void GetInput_LoginMenu(int);
-void GetInput_AdminMenu(int);
-void GetInput_UserMenu(int);
-void GetInput();
+void GetInput_LoginMenu();
 
 //*********************************************************MAIN FUNCTION*************************************************************************************//
 
 int main()
 {
     DisplayLoginMenu();
-    GetInput();
-
+    GetInput_LoginMenu();
     return 0;
 }
 
@@ -63,7 +59,6 @@ void RegisterUser()
 
     printf("Registration Successful !!! Press Any Key to Continue.\n");
 
-    fflush(stdout);
     DisplayLoginMenu();
 }
 
@@ -97,33 +92,16 @@ void LoginUser()
             printf("Login Successful!\n");
             fflush(stdin);
             DisplayAdminMenu();
-
-            GetInput();
         }
     }
     printf("Login Failed!!!");
 }
 
-//------------------------------------------------------------HANDLE USER INPUT---------------------------------------------------------------
-void GetInput()
+void GetInput_LoginMenu()
 {
     int num;
-    scanf("%d", &num);
+    scanf("%d",&num);
 
-    if (uState == LoginMenu)
-    {
-        GetInput_LoginMenu(num);
-    }
-    else if (uState == AdminMenu)
-    {
-        GetInput_AdminMenu(num);
-    }
-    else
-        GetInput_UserMenu(num);
-}
-
-void GetInput_LoginMenu(int num)
-{
     switch (num)
     {
     case 1:
@@ -139,52 +117,3 @@ void GetInput_LoginMenu(int num)
     }
 }
 
-void GetInput_AdminMenu(int num)
-{
-    switch (num)
-    {
-    case 1:
-        CreateContact();
-        break;
-    case 2:
-        EditContact();
-        break;
-    case 3:
-        RemoveContact();
-        break;
-    case 4:
-        RemoveAllContacts();
-        break;
-    case 5:
-        SearchContact();
-        break;
-    case 6:
-        DisplayAllContacts();
-    case 7:
-        ExitApplication();
-        break;
-
-    default:
-        printf("Please Enter Valid Option");
-        break;
-    }
-}
-
-void GetInput_UserMenu(int num)
-{
-    switch (num)
-    {
-    case 1:
-        SearchContact();
-        break;
-    case 2:
-        DisplayAllContacts();
-    case 3:
-        ExitApplication();
-        break;
-
-    default:
-        printf("Please Enter Valid Option");
-        break;
-    }
-}
