@@ -47,12 +47,6 @@ void SearchContact();
 void DisplayAllContacts();
 
 void ExitApplication();
-
-void GetInput_AdminMenu();
-
-void GetInput_UserMenu();
-
-void GetInput_LoginMenu();
 //*********************************************************MAIN FUNCTION*************************************************************************************//
 
 int main()
@@ -131,7 +125,7 @@ void LoginUser()
     printf("Login Failed!!! Please Enter correct credentials.\n");
     printf("Press any key to go to login menu");
     getch();
-    main();
+    DisplayLoginMenu();
 }
 
 //------------------------------------MENU HANDLERS---------------------------------------------------------------
@@ -146,7 +140,23 @@ void DisplayLoginMenu()
     printf("1. Login\n");
     printf("2. Register\n");
 
-    GetInput_LoginMenu();
+    int num;
+    scanf("%d", &num);
+
+    switch (num)
+    {
+    case 1:
+        LoginUser();
+        break;
+    case 2:
+        RegisterUser();
+        break;
+
+    default:
+        printf("Please Enter Valid Option");
+        break;
+    }
+    
 }
 
 void DisplayAdminMenu()
@@ -161,7 +171,37 @@ void DisplayAdminMenu()
     printf("6. Display All Contacts\n");
     printf("7. Exit\n");
 
-    GetInput_AdminMenu();
+
+    int num;
+    scanf("%d", &num);
+
+    switch (num)
+    {
+    case 1:
+        CreateContact();
+        break;
+    case 2:
+        EditContact();
+        break;
+    case 3:
+        RemoveContact();
+        break;
+    case 4:
+        RemoveAllContacts();
+        break;
+    case 5:
+        SearchContact();
+        break;
+    case 6:
+        DisplayAllContacts();
+    case 7:
+        ExitApplication();
+        break;
+
+    default:
+        printf("Please Enter Valid Option");
+        break;
+    }
 }
 
 void DisplayUserMenu()
@@ -170,7 +210,24 @@ void DisplayUserMenu()
     printf("1. Search Contacts\n");
     printf("2. Display All Contacts\n");
 
-    GetInput_UserMenu();
+    int num;
+    scanf("%d", &num);
+
+    switch (num)
+    {
+    case 1:
+        SearchContact();
+        break;
+    case 2:
+        DisplayAllContacts();
+    case 3:
+        ExitApplication();
+        break;
+
+    default:
+        printf("Please Enter Valid Option");
+        break;
+    }
 }
 
 // Data Creation and Management Starts from here----------------------------------------------------------------
@@ -251,84 +308,4 @@ void ExitApplication()
     printf("\t\tExit Menu\n");
 }
 
-//------------------------------------------------------------HANDLE USER INPUT---------------------------------------------------------------
 
-void GetInput_AdminMenu()
-{
-    int num;
-    scanf("%d", &num);
-
-    switch (num)
-    {
-    case 1:
-        CreateContact();
-        break;
-    case 2:
-        EditContact();
-        break;
-    case 3:
-        RemoveContact();
-        break;
-    case 4:
-        RemoveAllContacts();
-        break;
-    case 5:
-        SearchContact();
-        break;
-    case 6:
-        DisplayAllContacts();
-    case 7:
-        ExitApplication();
-        break;
-
-    default:
-        printf("Please Enter Valid Option");
-        break;
-    }
-
-    fflush(stdin);
-}
-
-void GetInput_UserMenu()
-{
-    int num;
-    scanf("%d", &num);
-
-    switch (num)
-    {
-    case 1:
-        SearchContact();
-        break;
-    case 2:
-        DisplayAllContacts();
-    case 3:
-        ExitApplication();
-        break;
-
-    default:
-        printf("Please Enter Valid Option");
-        break;
-    }
-     fflush(stdin);
-}
-
-void GetInput_LoginMenu()
-{
-    int num;
-    scanf("%d", &num);
-
-    switch (num)
-    {
-    case 1:
-        LoginUser();
-        break;
-    case 2:
-        RegisterUser();
-        break;
-
-    default:
-        printf("Please Enter Valid Option");
-        break;
-    }
-     fflush(stdin);
-}
