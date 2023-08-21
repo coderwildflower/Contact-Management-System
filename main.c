@@ -16,7 +16,7 @@ void LoginUser();
 void RegisterUser();
 //--------------------------
 
-//STORE CONTACT-----------------
+// STORE CONTACT-----------------
 struct Contact
 {
     char name[20];
@@ -65,7 +65,7 @@ int main()
 void RegisterUser()
 {
     system("cls");
-  
+
     printf("\t\t\t\tREGISTER USER\n");
 
     FILE *file_W;
@@ -90,6 +90,7 @@ void RegisterUser()
     fclose(file_W);
 
     printf("Registration Successful !!! Press Any Key to Continue.\n");
+    getch();
 
     DisplayLoginMenu();
 }
@@ -121,18 +122,22 @@ void LoginUser()
     {
         if (strcmp(uData.userName, temp_name) == 0 && strcmp(uData.password, temp_pw) == 0)
         {
-            printf("Login Successful!\n");
-            
+            printf("Login Successful !! Press any key to Continue\n");
+            getch();
+
             DisplayAdminMenu();
         }
     }
-    printf("Login Failed!!!");
+    printf("Login Failed!!! Please Enter correct credentials.\n");
+    printf("Press any key to go to login menu");
+    getch();
+    main();
 }
 
 //------------------------------------MENU HANDLERS---------------------------------------------------------------
 void DisplayLoginMenu()
 {
-  
+    system("cls");
     printf("\t\t\t\t- - - - - - - - - - - - - \n");
     printf("\t\t\t\tCONTACT MANAGEMENT SYSTEM\n");
     printf("\t\t\t\t- - - - - - - - - - - - - \n\n");
@@ -146,10 +151,7 @@ void DisplayLoginMenu()
 
 void DisplayAdminMenu()
 {
-  
     system("cls");
-
-    GetInput_AdminMenu();
 
     printf("1. Create New Contact\n");
     printf("2. Edit Contact\n");
@@ -158,23 +160,23 @@ void DisplayAdminMenu()
     printf("5. Search Contacts\n");
     printf("6. Display All Contacts\n");
     printf("7. Exit\n");
+
+    GetInput_AdminMenu();
 }
 
 void DisplayUserMenu()
 {
     system("cls");
-
-    GetInput_UserMenu();
-
     printf("1. Search Contacts\n");
     printf("2. Display All Contacts\n");
+
+    GetInput_UserMenu();
 }
 
 // Data Creation and Management Starts from here----------------------------------------------------------------
 void CreateContact()
 {
     system("cls");
-
     printf("\t\t\tCREATE CONTACT\n");
 
     struct Contact _contact;
@@ -187,23 +189,23 @@ void CreateContact()
     }
 
     printf("Enter the Name: \n");
-    scanf("%s",&_contact.name);
+    scanf("%s", &_contact.name);
     fprintf(contactFile, "Name: %s\n", _contact.name);
 
     printf("Enter a Phone Number: \n");
-    scanf("%s",&_contact.phone);
-    fprintf(contactFile, "Phone Number: %s\n",_contact.phone);
+    scanf("%s", &_contact.phone);
+    fprintf(contactFile, "Phone Number: %s\n", _contact.phone);
 
     printf("Enter an Email Address: \n");
-    scanf("%s",&_contact.email);
+    scanf("%s", &_contact.email);
     fprintf(contactFile, "Email: %s\n", _contact.email);
 
     printf("Enter an Address: \n");
-    scanf("%s",&_contact.address);
+    scanf("%s", &_contact.address);
     fprintf(contactFile, "Address: %s\n", _contact.address);
 
     printf("Enter Gender \n");
-    scanf("%s",&_contact.gender);
+    scanf("%s", &_contact.gender);
     fprintf(contactFile, "Gender: %s\n", _contact.gender);
 
     fclose(contactFile);
@@ -214,42 +216,36 @@ void CreateContact()
 void EditContact()
 {
     system("cls");
-
     printf("\t\tEdit Contact\n");
 }
 
 void RemoveContact()
 {
     system("cls");
-
     printf("\t\tRemove Contact\n");
 }
 
 void RemoveAllContacts()
 {
     system("cls");
-
     printf("\t\tRemove All Contacts\n");
 }
 
 void SearchContact()
 {
     system("cls");
-
     printf("\t\tSearch Contact\n");
 }
 
 void DisplayAllContacts()
 {
     system("cls");
-
     printf("\t\tDisplay All Contacts\n");
 }
 
 void ExitApplication()
 {
     system("cls");
-
     printf("\t\tExit Menu\n");
 }
 
@@ -258,7 +254,7 @@ void ExitApplication()
 void GetInput_AdminMenu()
 {
     int num;
-    scanf("%d",&num);
+    scanf("%d", &num);
 
     switch (num)
     {
@@ -292,7 +288,7 @@ void GetInput_AdminMenu()
 void GetInput_UserMenu()
 {
     int num;
-    scanf("%d",&num);
+    scanf("%d", &num);
 
     switch (num)
     {
@@ -314,7 +310,7 @@ void GetInput_UserMenu()
 void GetInput_LoginMenu()
 {
     int num;
-    scanf("%d",&num);
+    scanf("%d", &num);
 
     switch (num)
     {
@@ -330,4 +326,3 @@ void GetInput_LoginMenu()
         break;
     }
 }
-
