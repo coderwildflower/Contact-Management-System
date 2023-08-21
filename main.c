@@ -179,7 +179,9 @@ void CreateContact()
     system("cls");
     printf("\t\t\tCREATE CONTACT\n");
 
-    struct Contact _contact;
+    int contactIndex = 0;
+    int maxContact = 100;
+    struct Contact _contact[100];
     FILE *contactFile;
 
     contactFile = fopen("contacts.txt", "a");
@@ -189,27 +191,27 @@ void CreateContact()
     }
 
     printf("Enter the Name: \n");
-    scanf("%s", &_contact.name);
-    fprintf(contactFile, "Name: %s\n", _contact.name);
+    scanf("%s", &_contact[contactIndex].name);
+    fprintf(contactFile, "Name: %s\n",_contact[contactIndex].name);
 
     printf("Enter a Phone Number: \n");
-    scanf("%s", &_contact.phone);
-    fprintf(contactFile, "Phone Number: %s\n", _contact.phone);
+    scanf("%s", &_contact[contactIndex].phone);
+    fprintf(contactFile, "Phone Number: %s\n", _contact[contactIndex].phone);
 
     printf("Enter an Email Address: \n");
-    scanf("%s", &_contact.email);
-    fprintf(contactFile, "Email: %s\n", _contact.email);
+    scanf("%s", &_contact[contactIndex].email);
+    fprintf(contactFile, "Email: %s\n", _contact[contactIndex].email);
 
     printf("Enter an Address: \n");
-    scanf("%s", &_contact.address);
-    fprintf(contactFile, "Address: %s\n", _contact.address);
+    scanf("%s", &_contact[contactIndex].address);
+    fprintf(contactFile, "Address: %s\n", _contact[contactIndex].address);
 
     printf("Enter Gender \n");
-    scanf("%s", &_contact.gender);
-    fprintf(contactFile, "Gender: %s\n", _contact.gender);
+    scanf("%s", &_contact[contactIndex].gender);
+    fprintf(contactFile, "Gender: %s\n", _contact[contactIndex].gender);
 
     fclose(contactFile);
-
+    contactIndex++;
     printf("New Contact Created.\n");
 }
 
@@ -283,6 +285,8 @@ void GetInput_AdminMenu()
         printf("Please Enter Valid Option");
         break;
     }
+
+    fflush(stdin);
 }
 
 void GetInput_UserMenu()
@@ -305,6 +309,7 @@ void GetInput_UserMenu()
         printf("Please Enter Valid Option");
         break;
     }
+     fflush(stdin);
 }
 
 void GetInput_LoginMenu()
@@ -325,4 +330,5 @@ void GetInput_LoginMenu()
         printf("Please Enter Valid Option");
         break;
     }
+     fflush(stdin);
 }
