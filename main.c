@@ -75,10 +75,12 @@ void RegisterUser()
 {
     system("cls");
 
-    printf("\t\t\t\tREGISTER USER\n");
+    printf("\n\t\t\t\t------------------------------------------- \n");
+    printf("\t\t\t\t\t        Register \n");
+    printf("\t\t\t\t------------------------------------------- \n\n");
 
     FILE *file_W;
-    file_W = fopen("RegisterUserData.txt", "w");
+    file_W = fopen("RegisterUserData.txt", "wb");
 
     if (file_W == NULL)
     {
@@ -110,16 +112,20 @@ void RegisterUser()
     {
         c = getch();
 
-        if (c == 13 || c == 9 || c == 27)
+        if (c == TAB || c == ESCAPE || c == ENTER)
         {
             uData.password[index] = '\0';
             break;
         }
         else if ((c == BKSPC))
         {
-            /* code */
+            if (index > 0)
+            {
+                index--;
+                printf("\b");
+            }
         }
-        
+
         else
         {
             uData.password[index] = c;
@@ -143,14 +149,18 @@ void LoginUser()
 {
     system("cls");
 
-    printf("\t\t\t\tLOGIN USER\n");
+    printf("\n\t\t\t\t------------------------------------------- \n");
+    printf("\t\t\t\t\t         Login \n");
+    printf("\t\t\t\t------------------------------------------- \n\n");
 
     FILE *file_R;
     file_R = fopen("RegisterUserData.txt", "r");
 
     if (file_R == NULL)
     {
-        printf("Error Opening File");
+        printf("Error Opening File!!! Press Any key to go the Menu");
+        getch();
+        DisplayLoginInfo();
     }
 
     // temporary data holder
@@ -163,15 +173,19 @@ void LoginUser()
 
     printf("Please Enter Your Username\n");
     scanf("%s", temp_name);
+    printf("\n");
 
     printf("Please Enter Your Email Address\n");
     scanf("%s", temp_email);
+    printf("\n");
 
     printf("Please Enter Your Phone Number\n");
     scanf("%s", temp_phNumber);
+    printf("\n");
 
     printf("Please Enter Your password\n");
     scanf("%s", temp_pw);
+    printf("\n");
 
     while (fscanf(file_R, "%s %s %s %s", uData.userName, uData.phNumber, uData.email, uData.password) != EOF)
     {
@@ -201,7 +215,7 @@ void DisplayLoginInfo()
     system("cls");
 
     printf("\n\t\t\t\t------------------------------------------- \n");
-    printf("\t\t\t\t\t           Admin Login \n");
+    printf("\t\t\t\t\t         Login or Register \n");
     printf("\t\t\t\t------------------------------------------- \n\n");
 
     printf("[1] Login. \n");
@@ -277,6 +291,10 @@ void DisplayAdminMenu()
 {
     system("cls");
 
+    printf("\n\t\t\t\t------------------------------------------- \n");
+    printf("\t\t\t\t\t         ADMIN MENU \n");
+    printf("\t\t\t\t------------------------------------------- \n\n");
+
     printf("1. Create New Contact\n");
     printf("2. Edit Contact\n");
     printf("3. Remove Contact\n");
@@ -320,6 +338,11 @@ void DisplayAdminMenu()
 void DisplayUserMenu()
 {
     system("cls");
+
+    printf("\n\t\t\t\t------------------------------------------- \n");
+    printf("\t\t\t\t\t         USER MENU \n");
+    printf("\t\t\t\t------------------------------------------- \n\n");
+
     printf("1. Search Contacts\n");
     printf("2. Display All Contacts\n");
     printf("3. Return to Menu\n");
@@ -350,11 +373,13 @@ void CreateContact()
     system("cls");
     fflush(stdin);
 
-    printf("\t\t\tCREATE CONTACT\n");
+    printf("\n\t\t\t\t------------------------------------------- \n");
+    printf("\t\t\t\t\t         Create Contact \n");
+    printf("\t\t\t\t------------------------------------------- \n\n");
 
     FILE *contactFile;
 
-    contactFile = fopen("contacts.txt", "a");
+    contactFile = fopen("contacts.txt", "ab");
     if (contactFile == NULL)
     {
         printf("Error opening file.\n");
