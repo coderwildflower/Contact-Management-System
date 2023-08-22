@@ -1,2 +1,4 @@
-test
-123
+Username: test
+Password: d
+Email Address: asdf@gmail.com
+Phone Number: 54545
