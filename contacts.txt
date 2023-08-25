@@ -1,13 +1,7 @@
-Ram
-9860123456ram@yahoo.com
-ram@yahoo.com
+ram
+1234567890ram@gmail.com
+ram@gmail.com
 kathmandu
-male
-teacher
+mstudent
+student
 
-Sita
-9860123456ram@yahoo.com
-sita@gmail.com
-pokhara
-female
-nurse

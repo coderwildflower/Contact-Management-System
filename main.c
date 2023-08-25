@@ -14,7 +14,7 @@ struct userData
     char userName[20];
     char password[20];
     char email[20];
-    char phNumber[20];
+    char phNumber[10];
 } uData;
 
 int totalUsers = 0;
@@ -26,12 +26,12 @@ void RegisterUser();
 // STORE CONTACT-----------------
 struct Contact
 {
-    char name[20];
+    char name[50];
     char phone[10];
-    char email[20];
-    char address[20];
-    char gender[10];
-    char profession[100];
+    char email[50];
+    char address[50];
+    char gender[1];
+    char profession[50];
 };
 struct Contact _contact;
 //--------------------------------
@@ -167,7 +167,7 @@ void LoginUser()
     char temp_name[20];
     char temp_pw[20];
     char temp_email[20];
-    char temp_phNumber[20];
+    char temp_phNumber[10];
 
     fflush(stdin);
 
@@ -387,31 +387,36 @@ void CreateContact()
     else
     {
         printf("Enter the Name: \n");
-        gets(_contact.name);
-
-        printf("\n");
+        if (fgets(_contact.name, sizeof(_contact.name), stdin) != NULL)
+        {
+            // Remove the newline character if present
+            size_t input_length = strlen(_contact.name);
+            if (input_length > 0 && _contact.name[input_length - 1] == '\n')
+            {
+                _contact.name[input_length - 1] = '\0';
+            }
+        }
+        printf("\n \n");
 
         printf("Enter a Phone Number: \n");
-        scanf("%s", &_contact.phone);
-        printf("\n");
+        LimitInput(10, _contact.phone);
+        fflush(stdin);
 
         printf("Enter an Email Address: \n");
-        scanf("%s", &_contact.email);
-
-        printf("\n");
+        LimitInput(50, _contact.email);
+        fflush(stdin);
 
         printf("Enter an Address: \n");
-        scanf("%s", &_contact.address);
-
-        printf("\n");
+        LimitInput(50, _contact.address);
+        fflush(stdin);
 
         printf("Enter Gender \n");
-        scanf("%s", &_contact.gender);
-
-        printf("\n");
+        LimitInput(1, _contact.gender);
+        fflush(stdin);
 
         printf("Enter a Profession \n");
-        scanf("%s", &_contact.profession);
+        LimitInput(50, _contact.profession);
+        fflush(stdin);
 
         // Validate datas
         fprintf(contactFile, "%s\n", _contact.name);
@@ -419,7 +424,7 @@ void CreateContact()
         fprintf(contactFile, "%s\n", _contact.email);
         fprintf(contactFile, "%s\n", _contact.address);
         fprintf(contactFile, "%s\n", _contact.gender);
-        fprintf(contactFile, "%s\n", _contact.profession);
+        fprintf(contactFile, "%s\n\n", _contact.profession);
 
         // if (isValidName(_contact.name) == 1 && isValidName(_contact.address == 1) && isValidName(_contact.profession == 1) && isValidNumber(_contact.phone) == 1)
         // {
@@ -488,17 +493,17 @@ void DisplayAllContacts()
 
     if (fscanf(contactFile, "%s %s %s %s %s %s\n", _contact.name, _contact.phone, _contact.email, _contact.address, _contact.gender, _contact.profession) != EOF)
     {
-        printf("\t\t|=========================================================================================================================|\n");
-        printf("\t\t|ID| \tName\t\t| Phone Number\t\t| Email\t              | Address\t\t        | Gender | Profession \n");
-        printf("\t\t|=========================================================================================================================| \n");
+        printf("\t\t|=============================================================================================================================================================================|\n");
+        printf("\t\t| ID  | %-35s| %-15s| %-35s| %-35s| %-5s| %s","Name","Phone","Email","Address","Gender","Profession                    |\n");
+        printf("\t\t|=============================================================================================================================================================================|\n");
 
         do
         {
-            printf("\t\t| %d| %s \t\t| %s \t\t| %s \t| %s \t\t|%s   |%s \t\t|\n", counter++, _contact.name, _contact.phone, _contact.email, _contact.address, _contact.gender, _contact.profession);
+            printf("\t\t| %d   | %-35.25s| %-15.10s| %-35.25s| %-35.20s| %-6.1s| %.35s \t\t      |\n", counter++, _contact.name, _contact.phone, _contact.email, _contact.address, _contact.gender, _contact.profession);
 
         } while (fscanf(contactFile, "%s %s %s %s %s %s\n", _contact.name, _contact.phone, _contact.email, _contact.address, _contact.gender, _contact.profession) != EOF);
 
-        printf("\t\t|=========================================================================================================================| \n\n");
+        printf("\t\t|=============================================================================================================================================================================| \n\n");
     }
     else
         printf(" ERROR:There are no contacts saved in the file. \n\n");
@@ -514,7 +519,34 @@ void ExitApplication()
     exit(0);
 }
 
-//-----------------------------------INPUT VALIDATION-------------------------------------------
+//-----------------------------------INPUT VALIDATION-----------------------------------------------
+void LimitInput(int targetCount, char input[])
+{
+    char c;
+    int i = 0;
+
+    while (i < targetCount)
+    {
+        c = getche();
+
+        if (c == ENTER || c == ESCAPE || c == TAB)
+        {
+            break;
+        }
+        if (c == BKSPC)
+        {
+            if (i > 0)
+            {
+                printf("\b \b");
+                i--;
+            }
+        }
+        input[i] = c;
+        i++;
+    }
+    input[i] = '\0';
+    printf("\n\n");
+}
 
 int isValidName(char *name)
 {
@@ -533,12 +565,12 @@ int isValidName(char *name)
 
 int isValidNumber(char num[])
 {
-    int length;
+
     for (int i = 0; i < 10; i++)
     {
         if (num[i] == '\0')
         {
-            length = 0;
+
             printf("------------------------------------------ \n");
             printf("ERROR: phone number digit must not be empty. \n");
             printf("------------------------------------------ \n");
@@ -547,25 +579,13 @@ int isValidNumber(char num[])
         }
         if (isdigit(num[i]) == 0)
         {
-            length = 0;
+
             printf("------------------------------------------ \n");
             printf("ERROR: phone number must contain only digits. \n");
             printf("------------------------------------------ \n");
 
             return 0;
         }
-
-        length++;
     }
-
-    if (length != 10)
-    {
-        printf("------------------------------------------ \n");
-        printf("ERROR: phone number must be of 10 digits. \n");
-        printf("------------------------------------------ \n");
-
-        return 0;
-    }
-    else
-        return 1;
+    return 1;
 }
