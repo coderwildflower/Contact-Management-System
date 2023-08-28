@@ -80,7 +80,7 @@ void RegisterUser()
     printf("\t\t\t\t------------------------------------------- \n\n");
 
     FILE *file_W;
-    file_W = fopen("RegisterUserData.txt", "wb");
+    file_W = fopen("RegisterUserData.txt", "w");
 
     if (file_W == NULL)
     {
@@ -382,39 +382,48 @@ void CreateContact()
     contactFile = fopen("contacts.txt", "a");
     if (contactFile == NULL)
     {
-        printf("Error opening file.\n");
+        printf("Error !! Press Any key to go the Menu");
+        getch();
+        DisplayAdminMenu();
     }
     else
     {
         printf("Enter the Name: \n");
-        LimitInput(51, _contact.name);
+        LimitInput(50, _contact.name);
 
         printf("Enter a Phone Number: \n");
         LimitInput(11, _contact.phone);
 
         printf("Enter an Email Address: \n");
-        LimitInput(51, _contact.email);
+        LimitInput(50, _contact.email);
 
         printf("Enter an Address: \n");
-        LimitInput(51, _contact.address);
+        LimitInput(50, _contact.address);
 
         printf("Enter Gender [M/F/O] \n");
         _contact.gender = getche();
-        printf("\n");
+        printf("\n\n");
 
         printf("Enter a Profession \n");
-        LimitInput(51, _contact.profession);
+        LimitInput(50, _contact.profession);
 
         // Validate datas---------------
 
         if (isValidName(_contact.name) == 1 && isValidName(_contact.address) == 1 && isValidName(_contact.profession) == 1 && isValidNumber(_contact.phone) == 1)
         {
+            // fwrite(_contact.name,sizeof(int),50,contactFile);
+            // fwrite(_contact.phone,sizeof(int),20,contactFile);
+            // fwrite(_contact.email,sizeof(int),50,contactFile);
+            // fwrite(_contact.address,sizeof(int),50,contactFile;
+            // fwrite(_contact.gender,sizeof(int),2,contactFile);
+            // fwrite(_contact.profession,sizeof(int),50,contactFile);
+
             fprintf(contactFile, "%s ", _contact.name);
             fprintf(contactFile, "%s ", _contact.phone);
             fprintf(contactFile, "%s ", _contact.email);
             fprintf(contactFile, "%s ", _contact.address);
-            fprintf(contactFile, "%s ", _contact.gender);
-            fprintf(contactFile, "%s ", _contact.gender);
+            fprintf(contactFile, "%c ", _contact.gender);
+            fprintf(contactFile, "%s ", _contact.profession);
 
             printf("New Contact Created Successfully. Press Anykey To Go To Admin Menu\n");
             getch();
@@ -448,7 +457,9 @@ void RemoveContact()
 void RemoveAllContacts()
 {
     system("cls");
-    printf("\t\tRemove All Contacts\n");
+    printf("--------------------------------- \n");
+    printf("    Reomve All Contacts  \n");
+    printf("--------------------------------- \n\n");
 }
 
 void SearchContact()
@@ -500,7 +511,11 @@ void ExitApplication()
 //-----------------------------------INPUT VALIDATION-----------------------------------------------
 void LimitInput(int targetCount, char input[])
 {
-
+    if (input == NULL)
+    {
+        printf("Invalid Input.\n");
+        return;
+    }
     char c;
     int i = 0;
 
