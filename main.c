@@ -15,15 +15,14 @@ enum UserState
     Admin,
     Basic
 };
-
 enum UserState _uState;
 
 // lOGIN SYSTEM VARIABLES----------------
 struct userData
 {
-    char userName[20];
-    char password[20];
-    char email[20];
+    char userName[30];
+    char password[30];
+    char email[30];
     char phNumber[10];
 } uData;
 
@@ -73,11 +72,13 @@ void DisplayAllContacts();
 
 void ExitApplication();
 
+void GetInput(int, char[]);
+
 int isValidNumber(char[]);
 
 int isValidName(char *name);
 
-void ReturnToMenu(enum UserState state);
+void ReturnToMenu();
 //*********************************************************MAIN FUNCTION*************************************************************************************//
 
 int main()
@@ -100,59 +101,59 @@ void RegisterUser()
 
     if (file_W == NULL)
     {
-        printf("Error Creating File.");
+        printf("Error durring Register. Press Any key To Return To Menu");
+        getch();
+        DisplayLoginInfo();
     }
     else
-        printf("File creation successful\n");
-
-    // Get Input
-    printf("Please Enter Your Username\n");
-    scanf("%s", &uData.userName);
-    fprintf(file_W, "%s ", uData.userName);
-    printf("\n");
-
-    printf("Please Enter Your Email Address\n");
-    scanf("%s", &uData.email);
-    fprintf(file_W, "%s ", uData.email);
-    printf("\n");
-
-    printf("Please Enter Your Phone Number\n");
-    scanf("%s", &uData.phNumber);
-    fprintf(file_W, "%s ", uData.phNumber);
-    printf("\n");
-
-    printf("Please Enter Your Password\n");
-    char c;
-    int index = 0;
-    while (1)
     {
-        c = getch();
+        // Get Input
+        printf("Please Enter Your Username\n");
+        scanf("%s", &uData.userName);
+        printf("\n");
 
-        if (c == TAB || c == ESCAPE || c == ENTER)
+        fflush(stdin);
+        printf("Please Enter Your Email Address\n");
+        scanf("%s", &uData.email);
+        printf("\n");
+
+        fflush(stdin);
+        printf("Please Enter Your Phone Number\n");
+        scanf("%s", &uData.phNumber);
+        printf("\n");
+
+        printf("Please Enter Your Password\n");
+        char c;
+        int index = 0;
+        while (1)
         {
-            uData.password[index] = '\0';
-            break;
-        }
-        else if ((c == BKSPC))
-        {
-            if (index > 0)
+            c = getch();
+
+            if (c == TAB || c == ESCAPE || c == ENTER)
             {
-                index--;
-                printf("\b \b");
+                uData.password[index] = '\0';
+                break;
+            }
+            else if ((c == BKSPC))
+            {
+                if (index > 0)
+                {
+                    index--;
+                    printf("\b \b");
+                }
+            }
+
+            else
+            {
+                uData.password[index] = c;
+                index++;
+                printf("*");
             }
         }
 
-        else
-        {
-            uData.password[index] = c;
-            index++;
-            printf("*");
-        }
+        // scanf("%s", &uData.password);
+        fprintf(file_W, "%s %s %s %s", uData.userName, uData.email, uData.phNumber, uData.password);
     }
-
-    // scanf("%s", &uData.password);
-    fprintf(file_W, "%s ", uData.password);
-
     fclose(file_W);
 
     printf("Registration Successful !!! Press Any Key to Continue.\n");
@@ -174,29 +175,20 @@ void LoginUser()
 
     if (file_R == NULL)
     {
-        printf("Error Opening File!!! Press Any key to go the Menu");
+        printf("Error: Admin Not Registered. Press Any key to go the Registration Menu");
         getch();
         DisplayLoginInfo();
     }
 
     // temporary data holder
-    char temp_name[20];
-    char temp_pw[20];
-    char temp_email[20];
-    char temp_phNumber[10];
+    char temp_pw[30];
+    char input[30];
 
     fflush(stdin);
 
-    printf("Please Enter Your Username\n");
-    scanf("%s", temp_name);
-    printf("\n");
+    printf("Please Enter Your Username OR Email Address OR Phone Number\n");
 
-    printf("Please Enter Your Email Address\n");
-    scanf("%s", temp_email);
-    printf("\n");
-
-    printf("Please Enter Your Phone Number\n");
-    scanf("%s", temp_phNumber);
+    scanf("%s", input);
     printf("\n");
 
     printf("Please Enter Your password\n");
@@ -205,7 +197,7 @@ void LoginUser()
 
     while (fscanf(file_R, "%s %s %s %s", uData.userName, uData.phNumber, uData.email, uData.password) != EOF)
     {
-        if (strcmp(uData.userName, temp_name) == 0 || strcmp(uData.email, temp_email) == 0 || strcmp(uData.phNumber, temp_phNumber) == 0)
+        if (strcmp(uData.userName, input) == 0 || strcmp(uData.email, input) == 0 || strcmp(uData.phNumber, input) == 0)
         {
             if (strcmp(uData.password, temp_pw) == 0)
             {
@@ -231,12 +223,12 @@ void DisplayLoginInfo()
     system("cls");
 
     printf("\n\t\t\t\t------------------------------------------- \n");
-    printf("\t\t\t\t\t         Login or Register \n");
+    printf("\t\t\t\t\t     Login or Register \n");
     printf("\t\t\t\t------------------------------------------- \n\n");
 
     printf("[1] Login. \n");
     printf("[2] Register. \n");
-    printf("[3] Return. \n");
+    printf("[3] Return To Main Menu. \n");
 
     int num;
     scanf("%d", &num);
@@ -317,7 +309,8 @@ void DisplayAdminMenu()
     printf("4. Remove All Contacts\n");
     printf("5. Search Contacts\n");
     printf("6. Display All Contacts\n");
-    printf("7. Exit\n");
+    printf("7. Return To Login Menu\n");
+    printf("8. Exit\n");
 
     int num;
     scanf("%d", &num);
@@ -342,11 +335,15 @@ void DisplayAdminMenu()
     case 6:
         DisplayAllContacts();
     case 7:
+        DisplayLoginMenu();
+    case 8:
         ExitApplication();
         break;
 
     default:
         printf("Please Enter Valid Option");
+        getch();
+        DisplayAdminMenu();
         break;
     }
 }
@@ -361,7 +358,7 @@ void DisplayUserMenu()
 
     printf("1. Search Contacts\n");
     printf("2. Display All Contacts\n");
-    printf("3. Return to Menu\n");
+    printf("3. Return to Login Menu\n");
 
     int num;
     scanf("%d", &num);
@@ -373,14 +370,15 @@ void DisplayUserMenu()
         break;
     case 2:
         DisplayAllContacts();
+        break;
     case 3:
-        ExitApplication();
+        DisplayLoginMenu();
         break;
 
     default:
         printf("Please Enter Valid Option");
         getch();
-        ReturnToMenu(_uState);
+        ReturnToMenu();
         break;
     }
 }
@@ -407,23 +405,23 @@ void CreateContact()
     else
     {
         printf("Enter the Name: \n");
-        LimitInput(50, _contact.name);
+        GetInput(sizeof(_contact.name), _contact.name);
 
         printf("Enter a Phone Number: \n");
-        LimitInput(11, _contact.phone);
+        GetInput(sizeof(_contact.phone), _contact.phone);
 
         printf("Enter an Email Address: \n");
-        LimitInput(50, _contact.email);
+        GetInput(sizeof(_contact.email), _contact.email);
 
         printf("Enter an Address: \n");
-        LimitInput(50, _contact.address);
+        GetInput(sizeof(_contact.address), _contact.address);
 
         printf("Enter Gender [M/F/O] \n");
         _contact.gender = getche();
         printf("\n\n");
 
         printf("Enter a Profession \n");
-        LimitInput(50, _contact.profession);
+        GetInput(sizeof(_contact.profession), _contact.profession);
 
         // Validate datas---------------
 
@@ -460,50 +458,151 @@ void CreateContact()
 
 void EditContact()
 {
-    // system("cls");
-
-    // printf("--------------------------------- \n");
-    // printf("    Edit Contacts  \n");
-    // printf("--------------------------------- \n\n");
-
-    // printf("Enter new contact information:\n");
-    // printf("Name: ");
-    // scanf("%s", contact->name);
-
-    // printf("Phone: ");
-    // scanf("%s", contact->phone);
-
-    // printf("Email: ");
-    // scanf("%s", contact->email);
-
-    // printf("Address: ");
-    // scanf("%s", contact->address);
-
-    // printf("Gender: ");
-    // scanf(" %c", &contact->gender);
-
-    // printf("Profession: ");
-    // scanf("%s", contact->profession);
-
-    // printf("Contact information updated.\n");
+    system("cls");
 }
 
 void RemoveContact()
 {
     system("cls");
-    printf("\t\tRemove Contact\n");
+
+    char confirmDelete[10];
+    char number[11];
+    int state = 0, counter = 1;
+
+    printf("\n\t\t\t\t------------------------------------------- \n");
+    printf("\t\t\t\t\t         REMOVE CONTACT \n");
+    printf("\t\t\t\t------------------------------------------- \n\n");
+
+    fflush(stdin);
+    printf("Enter the phone number to delete: ");
+    GetInput(sizeof(number), number);
+    printf("\n");
+
+    if (isValidNumber(number) != 1)
+    {
+        printf("Error: Press Any Key To Return To Menu.\n");
+        getch();
+        ReturnToMenu();
+    }
+
+    FILE *file = fopen("contacts.txt", "r");
+    FILE *tempFile = fopen("temporary.txt", "w");
+
+    while (fscanf(file, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
+    {
+        if (strcmp(number, _contact.phone) == 0)
+        {
+            if (counter >= 2)
+                printf("\n\t\tALERT: Same Nummber was found more than once.\n\t\t\tPlease review it.\n\n");
+
+            printf("\t\t|=============================================================================================================================================================================|\n");
+            printf("\t\t| ID  | %-35s| %-15s| %-35s| %-35s| %-6s  | %s", "Name", "Phone", "Email", "Address", "Gender", "Profession                  |\n");
+            printf("\t\t|=============================================================================================================================================================================|\n");
+            printf("\t\t| %d   | %-35.25s| %-15.10s| %-35.25s| %-35.20s| %c\t| %.35s \t\t      |\n", counter++, _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
+
+            fflush(stdin);
+            state = 1;
+            printf("\nType `CONFIRM` to delete this contact: ");
+            gets(confirmDelete);
+
+            if (strcmp(confirmDelete, "CONFIRM") == 0)
+            {
+                printf("\n\t\tDeleting File . . . \n\n");
+                state = 2;
+            }
+            else
+            {
+                fprintf(tempFile, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
+            }
+        }
+        else
+        {
+            fprintf(tempFile, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
+        }
+    }
+
+    fclose(file);
+    fclose(tempFile);
+
+    file = fopen("contacts.txt", "w");
+    tempFile = fopen("TempFile.txt", "r");
+
+    if (state == 1 || state == 2)
+    {
+        while (fscanf(tempFile, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
+            fprintf(file, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
+
+        fclose(file);
+        fclose(tempFile);
+    }
+    tempFile = fopen("temporary.txt", "w");
+    fclose(tempFile);
+
+    // show the messaage according to the operations perform
+    if (state = 0)
+    {
+        printf("----------------------------------------- \n");
+        printf(" No contacts found.  \n");
+        printf("----------------------------------------- \n");
+    }
+    else if (state == 1)
+    {
+        printf("----------------------------------------- \n");
+        printf(" ERROR: Invalid message. \n");
+        printf("----------------------------------------- \n");
+    }
+    else if (state == 2)
+    {
+        printf("----------------------------- \n");
+        printf(" Success: contact deleted. Press Any key to go to Admin Menu. \n");
+        printf("----------------------------- \n");
+    }
+
+    getch();
+    DisplayAdminMenu();
 }
 
 void RemoveAllContacts()
 {
     system("cls");
     printf("--------------------------------- \n");
-    printf("    Reomve All Contacts  \n");
+    printf("    Remove All Contacts  \n");
     printf("--------------------------------- \n\n");
+
+    fflush(stdin);
+    char confirmDelete[10];
+
+    printf("Type `CONFIRM` to delete all the contacts: \n");
+    gets(confirmDelete);
+    printf("\n");
+
+    FILE *contactFile;
+    // checks for the confirmation message
+    int choice = strcmp(confirmDelete, "CONFIRM");
+    if (choice == 0)
+    {
+        contactFile = fopen("contacts.txt", "w"); // erases everything from file and then save it
+        fclose(contactFile);
+        printf("------------------------------------------- \n");
+        printf("Success: All the contact details are deleted. \n");
+        printf("------------------------------------------- \n");
+    }
+    else
+    {
+        printf("----------------------------------------- \n");
+        printf("ERROR: Invalid message. \n");
+        printf("----------------------------------------- \n");
+    }
+
+    printf("Press Any Key To Return To Admin Menu");
+    getch();
+    DisplayAdminMenu();
 }
 
 void SearchContact()
 {
+    system("cls");
+
     printf("\n\n\t\t\t\t    ------------------------------------ \n");
     printf("\t\t\t\t               Search Contacts\n");
     printf("\t\t\t\t    ------------------------------------ \n\n");
@@ -524,13 +623,13 @@ void SearchContact()
         SearchContactByName();
         break;
     case 3:
-        RemoveContact();
+        ReturnToMenu();
         break;
 
     default:
         printf("Error: Please Enter Valid Option");
         getch();
-        ReturnToMenu(_uState);
+        DisplayUserMenu();
     }
 }
 
@@ -546,16 +645,15 @@ void SearchContactByPhone()
     int counter = 1;
     char num[15];
 
-    printf("Please Enter a Contact Number to search\n");
-    LimitInput(11, num);
+    printf("Please Enter a Phone Number to search\n");
+    GetInput(sizeof(num), num);
 
     printf("\n");
     if (isValidNumber(num) != 1)
     {
-        printf("Error: Please Enter A Valid Number.\n");
         printf("Error: Press Any Key To Return To Menu.\n");
         getch();
-        DisplayAdminMenu();
+        ReturnToMenu();
     }
 
     FILE *file;
@@ -577,7 +675,7 @@ void SearchContactByPhone()
     fclose(file);
 
     if (counter > 1)
-        printf("\t\t|============================================================================================================================================================================| \n\n");
+        printf("\t\t|=============================================================================================================================================================================| \n\n");
 
     if (found == 0)
     {
@@ -588,11 +686,63 @@ void SearchContactByPhone()
 
     printf("Press Any Key To Return To Menu.\n");
     getch();
-    DisplayAdminMenu();
+    ReturnToMenu();
 }
 
 void SearchContactByName()
 {
+    system("cls");
+
+    printf("\n\n\t\t\t\t    ------------------------------------ \n");
+    printf("\t\t\t\t        Search Contacts By Address\n");
+    printf("\t\t\t\t    ------------------------------------ \n\n");
+
+    int found = 0;
+    int counter = 1;
+    char Address[50];
+
+    printf("Please Enter an Address to search\n");
+    GetInput(sizeof(Address), Address);
+
+    printf("\n");
+    if (isValidName(Address) != 1)
+    {
+        printf("Error: Press Any Key To Return To Menu.\n");
+        getch();
+        ReturnToMenu();
+    }
+
+    FILE *file;
+    file = fopen("contacts.txt", "r");
+    while (fscanf(file, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
+    {
+        if (strcmp(Address, _contact.address) == 0)
+        {
+            if (counter == 1)
+            {
+                printf("\t\t|=============================================================================================================================================================================|\n");
+                printf("\t\t| ID  | %-35s| %-15s| %-35s| %-35s| %-6s  | %s", "Name", "Phone", "Email", "Address", "Gender", "Profession                  |\n");
+                printf("\t\t|=============================================================================================================================================================================|\n");
+            }
+            printf("\t\t| %d   | %-35.25s| %-15.10s| %-35.25s| %-35.20s| %c\t| %.35s \t\t      |\n", counter++, _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
+            found++;
+        }
+    }
+    fclose(file);
+
+    if (counter > 1)
+        printf("\t\t|=============================================================================================================================================================================| \n\n");
+
+    if (found == 0)
+    {
+        printf("----------------------------------------- \n");
+        printf("    Error: No contacts found. \n");
+        printf("----------------------------------------- \n");
+    }
+
+    printf("Press Any Key To Return To Menu.\n");
+    getch();
+    ReturnToMenu();
 }
 
 void DisplayAllContacts()
@@ -628,7 +778,7 @@ void DisplayAllContacts()
     fclose(contactFile);
     printf("Press Any key To Return To Menu");
     getch();
-    DisplayAdminMenu();
+    ReturnToMenu();
 }
 
 void ExitApplication()
@@ -637,13 +787,10 @@ void ExitApplication()
 }
 
 //-----------------------------------INPUT VALIDATION-----------------------------------------------
-void LimitInput(int targetCount, char input[])
+
+void GetInput(int targetCount, char input[])
 {
-    if (input == NULL)
-    {
-        printf("Invalid Input.\n");
-        return;
-    }
+
     char c;
     int i = 0;
 
@@ -671,13 +818,20 @@ void LimitInput(int targetCount, char input[])
     }
 
     input[i] = '\0';
+
+    if (input == NULL)
+    {
+        printf("Error: Invalid Input. Press Any key To Go To Admin Menu\n");
+        getch();
+        DisplayAdminMenu();
+    }
     printf("\n\n");
 }
 
 int isValidName(char name[])
 {
 
-    if (name == NULL || name[0] == '\0')
+    if (name == NULL)
     {
         printf("------------------------------------------ \n");
         printf("ERROR: Name Cannot Be Empty. \n");
@@ -689,12 +843,15 @@ int isValidName(char name[])
 
     for (int i = 0; i < length; i++)
     {
-        if (!isalpha(name[i]))
+        if (name[i] != ' ')
         {
-            printf("------------------------------------------ \n");
-            printf("ERROR: Please Enter Alphabets Only. \n");
-            printf("------------------------------------------ \n");
-            return 0;
+            if (!isalpha(name[i]))
+            {
+                printf("------------------------------------------ \n");
+                printf("ERROR: Please Enter Alphabets Only. \n");
+                printf("------------------------------------------ \n");
+                return 0;
+            }
         }
     }
     return 1;
@@ -729,11 +886,12 @@ int isValidNumber(char num[])
     return 1;
 }
 
-void ReturnToMenu(enum UserState state)
+void ReturnToMenu()
 {
-    if (state == Admin)
+    if (_uState == Admin)
     {
-       DisplayAdminMenu();
+        DisplayAdminMenu();
     }
-    else DisplayUserMenu();
+    else
+        DisplayUserMenu();
 }
