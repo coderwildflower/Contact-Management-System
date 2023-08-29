@@ -418,27 +418,25 @@ void CreateContact()
             // fwrite(_contact.gender,sizeof(int),2,contactFile);
             // fwrite(_contact.profession,sizeof(int),50,contactFile);
 
-            fprintf(contactFile, "%s ", _contact.name);
-            fprintf(contactFile, "%s ", _contact.phone);
-            fprintf(contactFile, "%s ", _contact.email);
-            fprintf(contactFile, "%s ", _contact.address);
-            fprintf(contactFile, "%c ", _contact.gender);
-            fprintf(contactFile, "%s ", _contact.profession);
+            fprintf(contactFile, "%s\n", _contact.name);
+            fprintf(contactFile, "%s\n", _contact.phone);
+            fprintf(contactFile, "%s\n", _contact.email);
+            fprintf(contactFile, "%s\n", _contact.address);
+            fprintf(contactFile, "%c\n", _contact.gender);
+            fprintf(contactFile, "%s\n", _contact.profession);
 
+            fclose(contactFile);
             printf("New Contact Created Successfully. Press Anykey To Go To Admin Menu\n");
             getch();
             DisplayAdminMenu();
         }
         else
         {
+            fclose(contactFile);
             printf("Press Any key To Go Admin Menu\n");
             getch();
             DisplayAdminMenu();
         }
-        fclose(contactFile);
-        // printf("New Contact Created Successfully. Press Anykey To Go To Admin Menu\n");
-        // getch();
-        // DisplayAdminMenu();
     }
 }
 
@@ -480,19 +478,20 @@ void DisplayAllContacts()
     FILE *contactFile;
     contactFile = fopen("contacts.txt", "r");
 
-    if (fscanf(contactFile, "%s %s %s %s %s %s\n", _contact.name, _contact.phone, _contact.email, _contact.address, _contact.gender, _contact.profession) != EOF)
+    if (fscanf(contactFile, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address,&_contact.gender, _contact.profession) != EOF)
     {
         printf("\t\t|=============================================================================================================================================================================|\n");
-        printf("\t\t| ID  | %-35s| %-15s| %-35s| %-35s| %-5s| %s", "Name", "Phone", "Email", "Address", "Gender", "Profession                    |\n");
+        printf("\t\t| ID  | %-35s| %-15s| %-35s| %-35s| %-6s  | %s", "Name", "Phone", "Email", "Address", "Gender", "Profession                  |\n");
         printf("\t\t|=============================================================================================================================================================================|\n");
 
         do
         {
-            printf("\t\t| %d   | %-35.25s| %-15.10s| %-35.25s| %-35.20s| %-6.1s| %.35s \t\t      |\n", counter++, _contact.name, _contact.phone, _contact.email, _contact.address, _contact.gender, _contact.profession);
+            printf("\t\t| %d   | %-35.25s| %-15.10s| %-35.25s| %-35.20s| %c\t| %.35s \t\t      |\n", counter++, _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
 
-        } while (fscanf(contactFile, "%s %s %s %s %s %s\n", _contact.name, _contact.phone, _contact.email, _contact.address, _contact.gender, _contact.profession) != EOF);
+        } while (fscanf(contactFile, "%s %s %s %s %c %s\n", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF);
 
         printf("\t\t|=============================================================================================================================================================================| \n\n");
+        fclose(contactFile);
     }
     else
         printf(" ERROR:There are no contacts saved in the file. \n\n");
