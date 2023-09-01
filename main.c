@@ -155,7 +155,7 @@ void RegisterUser()
         fprintf(file_W, "%s %s %s %s", uData.userName, uData.email, uData.phNumber, uData.password);
     }
     fclose(file_W);
-
+    printf("\n");
     printf("Registration Successful !!! Press Any Key to Continue.\n");
     getch();
 
@@ -459,6 +459,110 @@ void CreateContact()
 void EditContact()
 {
     system("cls");
+    printf("--------------------------------- \n");
+    printf("        Edit Contacts  \n");
+    printf("--------------------------------- \n\n");
+
+    int found = 0;
+    int counter = 1;
+    char num[15];
+
+    printf("Please Enter a Phone Number\n");
+    GetInput(sizeof(num), num);
+
+    printf("\n");
+    if (isValidNumber(num) != 1)
+    {
+        printf("Error: Press Any Key To Return To Menu.\n");
+        getch();
+        ReturnToMenu();
+    }
+    else
+    {
+        FILE *file, *temp;
+        file = fopen("contacts.txt", "r");
+        temp = fopen("EditTemp.txt", "w");
+
+        while (fscanf(file, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
+        {
+            if (strcmp(num, _contact.phone) == 0)
+            {
+                if (counter == 1)
+                {
+                    printf("\t\t|=============================================================================================================================================================================|\n");
+                    printf("\t\t| ID  | %-35s| %-15s| %-35s| %-35s| %-6s  | %s", "Name", "Phone", "Email", "Address", "Gender", "Profession                  |\n");
+                    printf("\t\t|=============================================================================================================================================================================|\n");
+                }
+                printf("\t\t| %d   | %-35.25s| %-15.10s| %-35.25s| %-35.20s| %c\t| %.35s \t\t      |\n", counter++, _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
+                printf("\t\t|=============================================================================================================================================================================|\n");
+                found++;
+
+                printf("Enter a New Name: \n");
+                GetInput(sizeof(_contact.name), _contact.name);
+
+                printf("Enter a New Phone Number: \n");
+                GetInput(sizeof(_contact.phone), _contact.phone);
+
+                printf("Enter a New Email Address: \n");
+                GetInput(sizeof(_contact.email), _contact.email);
+
+                printf("Enter a New Address: \n");
+                GetInput(sizeof(_contact.address), _contact.address);
+
+                printf("Enter New Gender [M/F/O] \n");
+                _contact.gender = getche();
+                printf("\n\n");
+
+                printf("Enter a New Profession \n");
+                GetInput(sizeof(_contact.profession), _contact.profession);
+
+                // Validate datas------------------
+
+                if (isValidName(_contact.name) == 1 && isValidName(_contact.address) == 1 && isValidName(_contact.profession) == 1 && isValidNumber(_contact.phone) == 1)
+                {
+                    fprintf(temp, "%s ", _contact.name);
+                    fprintf(temp, "%s ", _contact.phone);
+                    fprintf(temp, "%s ", _contact.email);
+                    fprintf(temp, "%s ", _contact.address);
+                    fprintf(temp, "%c ", _contact.gender);
+                    fprintf(temp, "%s\n", _contact.profession);
+                }
+                else
+                {
+                    printf("Press Any key To Go Admin Menu\n");
+                    getch();
+                    DisplayAdminMenu();
+                }
+            }
+            else    fprintf(temp, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
+        }
+
+        fclose(file);
+        fclose(temp);
+
+        file = fopen("contacts.txt", "w");
+        temp = fopen("EditTemp.txt", "r");
+
+        while (fscanf(temp, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
+            fprintf(file, "%s %s %s %s %c %s\n", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
+
+        fclose(file);
+        fclose(temp);
+
+        printf("Contact Edited Successfully. Press Anykey To Go To Admin Menu\n");
+        getch();
+        DisplayAdminMenu();
+    }
+    if (found == 0)
+    {
+        printf("----------------------------------------- \n");
+        printf("    Error: No contacts found. \n");
+        printf("----------------------------------------- \n");
+    }
+
+    printf("Press Any Key To Return To Menu.\n");
+    getch();
+    ReturnToMenu();
 }
 
 void RemoveContact()
@@ -472,94 +576,6 @@ void RemoveContact()
     printf("\n\t\t\t\t------------------------------------------- \n");
     printf("\t\t\t\t\t         REMOVE CONTACT \n");
     printf("\t\t\t\t------------------------------------------- \n\n");
-
-    fflush(stdin);
-    printf("Enter the phone number to delete: ");
-    GetInput(sizeof(number), number);
-    printf("\n");
-
-    if (isValidNumber(number) != 1)
-    {
-        printf("Error: Press Any Key To Return To Menu.\n");
-        getch();
-        ReturnToMenu();
-    }
-
-    FILE *file = fopen("contacts.txt", "r");
-    FILE *tempFile = fopen("temporary.txt", "w");
-
-    while (fscanf(file, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
-    {
-        if (strcmp(number, _contact.phone) == 0)
-        {
-            if (counter >= 2)
-                printf("\n\t\tALERT: Same Nummber was found more than once.\n\t\t\tPlease review it.\n\n");
-
-            printf("\t\t|=============================================================================================================================================================================|\n");
-            printf("\t\t| ID  | %-35s| %-15s| %-35s| %-35s| %-6s  | %s", "Name", "Phone", "Email", "Address", "Gender", "Profession                  |\n");
-            printf("\t\t|=============================================================================================================================================================================|\n");
-            printf("\t\t| %d   | %-35.25s| %-15.10s| %-35.25s| %-35.20s| %c\t| %.35s \t\t      |\n", counter++, _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
-
-            fflush(stdin);
-            state = 1;
-            printf("\nType `CONFIRM` to delete this contact: ");
-            gets(confirmDelete);
-
-            if (strcmp(confirmDelete, "CONFIRM") == 0)
-            {
-                printf("\n\t\tDeleting File . . . \n\n");
-                state = 2;
-            }
-            else
-            {
-                fprintf(tempFile, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
-            }
-        }
-        else
-        {
-            fprintf(tempFile, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
-        }
-    }
-
-    fclose(file);
-    fclose(tempFile);
-
-    file = fopen("contacts.txt", "w");
-    tempFile = fopen("TempFile.txt", "r");
-
-    if (state == 1 || state == 2)
-    {
-        while (fscanf(tempFile, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
-            fprintf(file, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
-
-        fclose(file);
-        fclose(tempFile);
-    }
-    tempFile = fopen("temporary.txt", "w");
-    fclose(tempFile);
-
-    // show the messaage according to the operations perform
-    if (state = 0)
-    {
-        printf("----------------------------------------- \n");
-        printf(" No contacts found.  \n");
-        printf("----------------------------------------- \n");
-    }
-    else if (state == 1)
-    {
-        printf("----------------------------------------- \n");
-        printf(" ERROR: Invalid message. \n");
-        printf("----------------------------------------- \n");
-    }
-    else if (state == 2)
-    {
-        printf("----------------------------- \n");
-        printf(" Success: contact deleted. Press Any key to go to Admin Menu. \n");
-        printf("----------------------------- \n");
-    }
-
-    getch();
-    DisplayAdminMenu();
 }
 
 void RemoveAllContacts()
@@ -673,9 +689,6 @@ void SearchContactByPhone()
         }
     }
     fclose(file);
-
-    if (counter > 1)
-        printf("\t\t|=============================================================================================================================================================================| \n\n");
 
     if (found == 0)
     {
