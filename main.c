@@ -23,7 +23,7 @@ struct userData
     char userName[30];
     char password[30];
     char email[30];
-    char phNumber[10];
+    char phNumber[11];
 } uData;
 
 int totalUsers = 0;
@@ -78,6 +78,8 @@ int isValidNumber(char[]);
 
 int isValidName(char *name);
 
+int isValidGender(char);
+
 void ReturnToMenu();
 //*********************************************************MAIN FUNCTION*************************************************************************************//
 
@@ -119,8 +121,13 @@ void RegisterUser()
 
         fflush(stdin);
         printf("Please Enter Your Phone Number\n");
-        scanf("%s", &uData.phNumber);
-        printf("\n");
+        GetInput(11, uData.phNumber);
+        if (isValidNumber(uData.phNumber) != 1)
+        {
+            printf("Press Enter Key To Go To Register Again");
+            getch();
+            RegisterUser();
+        }
 
         printf("Please Enter Your Password\n");
         char c;
@@ -155,7 +162,7 @@ void RegisterUser()
         fprintf(file_W, "%s %s %s %s", uData.userName, uData.email, uData.phNumber, uData.password);
     }
     fclose(file_W);
-    printf("\n");
+    printf("\n\n");
     printf("Registration Successful !!! Press Any Key to Continue.\n");
     getch();
 
@@ -425,7 +432,7 @@ void CreateContact()
 
         // Validate datas---------------
 
-        if (isValidName(_contact.name) == 1 && isValidName(_contact.address) == 1 && isValidName(_contact.profession) == 1 && isValidNumber(_contact.phone) == 1)
+        if (isValidName(_contact.name) == 1 && isValidName(_contact.address) == 1 && isValidName(_contact.profession) == 1 && isValidNumber(_contact.phone) == 1 && isValidGender(_contact.gender) == 1)
         {
             // fwrite(_contact.name,sizeof(int),50,contactFile);
             // fwrite(_contact.phone,sizeof(int),20,contactFile);
@@ -518,7 +525,7 @@ void EditContact()
 
                 // Validate datas------------------
 
-                if (isValidName(_contact.name) == 1 && isValidName(_contact.address) == 1 && isValidName(_contact.profession) == 1 && isValidNumber(_contact.phone) == 1)
+                if (isValidName(_contact.name) == 1 && isValidName(_contact.address) == 1 && isValidName(_contact.profession) == 1 && isValidNumber(_contact.phone) == 1 && isValidGender(_contact.gender) == 1)
                 {
                     fprintf(temp, "%s ", _contact.name);
                     fprintf(temp, "%s ", _contact.phone);
@@ -891,7 +898,7 @@ void GetInput(int targetCount, char input[])
                 i--;
             }
         }
-        else if (c >= 32 && c <= 126)
+        else
         {
             input[i] = c;
             i++;
@@ -965,6 +972,19 @@ int isValidNumber(char num[])
         }
     }
     return 1;
+}
+
+int isValidGender(char ch)
+{
+    if (ch != 'M' || ch != 'm' || ch != 'F' || ch != 'f' || ch != 'O' || ch != 'o')
+    {
+        printf("------------------------------------------\n");
+        printf("ERROR: Please Enter Valid Gender.\n");
+        printf("------------------------------------------\n");
+        return 0;
+    }
+    else
+        return 1;
 }
 
 void ReturnToMenu()
