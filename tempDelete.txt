@@ -1,3 +1,0 @@
-test tester 0987654321 test@example.com kathmandu ³ teacher
-sita karki 1234567890 sita@example.com kathmandu ³ student
-Ram Dahal 0099887722 ram@yahoo.com dharan ³ painter
