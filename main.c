@@ -35,7 +35,8 @@ void RegisterUser();
 // STORE CONTACT-----------------
 struct Contact
 {
-    char name[50];
+    char firstName[50];
+    char LastName[50];
     char phone[11];
     char email[50];
     char address[50];
@@ -95,7 +96,7 @@ void RegisterUser()
     system("cls");
 
     printf("\n\t\t\t\t------------------------------------------- \n");
-    printf("\t\t\t\t\t        Register \n");
+    printf("\t\t\t\t\t        Admin Register \n");
     printf("\t\t\t\t------------------------------------------- \n\n");
 
     FILE *file_W;
@@ -174,7 +175,7 @@ void LoginUser()
     system("cls");
 
     printf("\n\t\t\t\t------------------------------------------- \n");
-    printf("\t\t\t\t\t         Login \n");
+    printf("\t\t\t\t\t         Admin Login \n");
     printf("\t\t\t\t------------------------------------------- \n\n");
 
     FILE *file_R;
@@ -266,10 +267,9 @@ void DisplayLoginMenu()
 {
     system("cls");
 
-    system("color 3");
-    printf("\n\t\t\t\t------------------------------------------- \n");
-    printf("\t\t\t\t\t   Contact Management System \n");
-    printf("\t\t\t\t------------------------------------------- \n\n");
+    printf("\n\t\t\t\t---------------------------------------------- \n");
+    printf("\t\t\t\t\t    Contact Management System \n");
+    printf("\t\t\t\t---------------------------------------------- \n\n");
 
     printf("Login As: \n\n");
     printf("[1] Administrator. \n");
@@ -411,8 +411,11 @@ void CreateContact()
     }
     else
     {
-        printf("Enter the Name: \n");
-        GetInput(sizeof(_contact.name), _contact.name);
+        printf("Enter the First Name: \n");
+        GetInput(sizeof(_contact.firstName), _contact.firstName);
+
+        printf("Enter the Second Name: \n");
+        GetInput(sizeof(_contact.LastName), _contact.LastName);
 
         printf("Enter a Phone Number: \n");
         GetInput(sizeof(_contact.phone), _contact.phone);
@@ -430,18 +433,13 @@ void CreateContact()
         printf("Enter a Profession \n");
         GetInput(sizeof(_contact.profession), _contact.profession);
 
-        // Validate datas---------------
+        // Validate datas----------------------------------------------------------
 
-        if (isValidName(_contact.name) == 1 && isValidName(_contact.address) == 1 && isValidName(_contact.profession) == 1 && isValidNumber(_contact.phone) == 1 && isValidGender(_contact.gender) == 1)
+        if (isValidName(_contact.firstName) == 1 && isValidName(_contact.LastName) == 1 && isValidName(_contact.address) == 1 && isValidName(_contact.profession) == 1 && isValidNumber(_contact.phone) == 1 && isValidGender(_contact.gender) == 1)
         {
-            // fwrite(_contact.name,sizeof(int),50,contactFile);
-            // fwrite(_contact.phone,sizeof(int),20,contactFile);
-            // fwrite(_contact.email,sizeof(int),50,contactFile);
-            // fwrite(_contact.address,sizeof(int),50,contactFile;
-            // fwrite(_contact.gender,sizeof(int),2,contactFile);
-            // fwrite(_contact.profession,sizeof(int),50,contactFile);
 
-            fprintf(contactFile, "%s ", _contact.name);
+            fprintf(contactFile, "%s ", _contact.firstName);
+            fprintf(contactFile, "%s ", _contact.LastName);
             fprintf(contactFile, "%s ", _contact.phone);
             fprintf(contactFile, "%s ", _contact.email);
             fprintf(contactFile, "%s ", _contact.address);
@@ -490,7 +488,7 @@ void EditContact()
         file = fopen("contacts.txt", "r");
         temp = fopen("EditTemp.txt", "w");
 
-        while (fscanf(file, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
+        while (fscanf(file, "%s %s %s %s %s %c %s", _contact.firstName, _contact.LastName, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
         {
             if (strcmp(num, _contact.phone) == 0)
             {
@@ -500,12 +498,15 @@ void EditContact()
                     printf("\t\t| ID  | %-35s| %-15s| %-35s| %-35s| %-6s  | %s", "Name", "Phone", "Email", "Address", "Gender", "Profession                  |\n");
                     printf("\t\t|=============================================================================================================================================================================|\n");
                 }
-                printf("\t\t| %d   | %-35.25s| %-15.10s| %-35.25s| %-35.20s| %c\t| %.35s \t\t      |\n", counter++, _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
+                printf("\t\t| %d   | %s %-31s| %-15.10s| %-35.25s| %-35.20s| %c\t| %.35s \t\t      |\n", counter++, _contact.firstName, _contact.LastName, _contact.phone, _contact.email, _contact.address, _contact.gender, _contact.profession);
                 printf("\t\t|=============================================================================================================================================================================|\n");
                 found++;
 
-                printf("Enter a New Name: \n");
-                GetInput(sizeof(_contact.name), _contact.name);
+                printf("Enter a New First Name: \n");
+                GetInput(sizeof(_contact.firstName), _contact.firstName);
+
+                printf("Enter a New Last Name: \n");
+                GetInput(sizeof(_contact.LastName), _contact.LastName);
 
                 printf("Enter a New Phone Number: \n");
                 GetInput(sizeof(_contact.phone), _contact.phone);
@@ -525,9 +526,10 @@ void EditContact()
 
                 // Validate datas------------------
 
-                if (isValidName(_contact.name) == 1 && isValidName(_contact.address) == 1 && isValidName(_contact.profession) == 1 && isValidNumber(_contact.phone) == 1 && isValidGender(_contact.gender) == 1)
+                if (isValidName(_contact.firstName) == 1 && isValidName(_contact.LastName) == 1 && isValidName(_contact.address) == 1 && isValidName(_contact.profession) == 1 && isValidNumber(_contact.phone) == 1 && isValidGender(_contact.gender) == 1)
                 {
-                    fprintf(temp, "%s ", _contact.name);
+                    fprintf(temp, "%s ", _contact.firstName);
+                    fprintf(temp, "%s ", _contact.LastName);
                     fprintf(temp, "%s ", _contact.phone);
                     fprintf(temp, "%s ", _contact.email);
                     fprintf(temp, "%s ", _contact.address);
@@ -543,7 +545,7 @@ void EditContact()
             }
             else
 
-                fprintf(temp, "%s %s %s %s %c %s\n", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
+                fprintf(temp, "%s %s %s %s %s %c %s\n", _contact.firstName, _contact.LastName, _contact.phone, _contact.email, _contact.address, _contact.gender, _contact.profession);
         }
 
         fclose(file);
@@ -561,8 +563,8 @@ void EditContact()
         file = fopen("contacts.txt", "w");
         temp = fopen("EditTemp.txt", "r");
 
-        while (fscanf(temp, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
-            fprintf(file, "%s %s %s %s %c %s\n", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
+        while (fscanf(temp, "%s %s %s %s %s %c %s", _contact.firstName, _contact.LastName, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
+            fprintf(file, "%s %s %s %s %s %c %s\n", _contact.firstName, _contact.LastName, _contact.phone, _contact.email, _contact.address, _contact.gender, _contact.profession);
 
         fclose(file);
         fclose(temp);
@@ -576,6 +578,10 @@ void EditContact()
 void RemoveContact()
 {
     system("cls");
+
+    printf("\n\n\t\t\t\t\t\t\t\t    ------------------------------------ \n");
+    printf("\t\t\t\t\t\t\t\t              Remmove A Contact \n");
+    printf("\t\t\t\t\t\t\t\t    ------------------------------------ \n\n");
 
     char number[11];
     int found = 0;
@@ -597,7 +603,7 @@ void RemoveContact()
     file = fopen("contacts.txt", "r");
     tempDelete = fopen("tempDelete.txt", "w");
 
-    while (fscanf(file, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
+    while (fscanf(file, "%s %s %s %s %s %c %s", _contact.firstName, _contact.LastName, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
     {
         if (strcmp(num, _contact.phone) == 0)
         {
@@ -607,7 +613,7 @@ void RemoveContact()
                 printf("\t\t| ID  | %-35s| %-15s| %-35s| %-35s| %-6s  | %s", "Name", "Phone", "Email", "Address", "Gender", "Profession                  |\n");
                 printf("\t\t|=============================================================================================================================================================================|\n");
             }
-            printf("\t\t| %d   | %-35.25s| %-15.10s| %-35.25s| %-35.20s| %c\t| %.35s \t\t      |\n", counter++, _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
+            printf("\t\t| %d   | %s %-31s| %-15.10s| %-35.25s| %-35.20s| %c\t| %.35s \t\t      |\n", counter++, _contact.firstName, _contact.LastName, _contact.phone, _contact.email, _contact.address, _contact.gender, _contact.profession);
             found++;
 
             printf("Do You Want To Delete This Contact? (Y/N)\n");
@@ -624,7 +630,7 @@ void RemoveContact()
                 printf("Please Input Valid Option\n");
         }
         else
-            fprintf(tempDelete, "%s %s %s %s %c %s\n", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
+            fprintf(tempDelete, "%s %s %s %s %s %c %s\n", _contact.firstName, _contact.LastName, _contact.phone, _contact.email, _contact.address, _contact.gender, _contact.profession);
     }
     fclose(file);
     fclose(tempDelete);
@@ -642,8 +648,8 @@ void RemoveContact()
     file = fopen("contacts.txt", "w");
     tempDelete = fopen("tempDelete.txt", "r");
 
-    while (fscanf(tempDelete, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
-        fprintf(file, "%s %s %s %s %c %s\n", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
+    while (fscanf(tempDelete, "%s %s %s %s %s %c %s", _contact.firstName, _contact.LastName, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
+        fprintf(file, "%s %s %s %s %c %s %s\n", _contact.firstName, _contact.LastName, _contact.phone, _contact.email, _contact.address, _contact.gender, _contact.profession);
 
     fclose(file);
     fclose(tempDelete);
@@ -749,7 +755,7 @@ void SearchContactByPhone()
 
     FILE *file;
     file = fopen("contacts.txt", "r");
-    while (fscanf(file, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
+    while (fscanf(file, "%s %s %s %s %s %c %s", _contact.firstName, _contact.LastName, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
     {
         if (strcmp(num, _contact.phone) == 0)
         {
@@ -759,7 +765,7 @@ void SearchContactByPhone()
                 printf("\t\t| ID  | %-35s| %-15s| %-35s| %-35s| %-6s  | %s", "Name", "Phone", "Email", "Address", "Gender", "Profession                  |\n");
                 printf("\t\t|=============================================================================================================================================================================|\n");
             }
-            printf("\t\t| %d   | %-35.25s| %-15.10s| %-35.25s| %-35.20s| %c\t| %.35s \t\t      |\n", counter++, _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
+            printf("\t\t| %d   | %s %-31s| %-15.10s| %-35.25s| %-35.20s| %c\t| %.35s \t\t      |\n", counter++, _contact.firstName, _contact.LastName, _contact.phone, _contact.email, _contact.address, _contact.gender, _contact.profession);
             found++;
         }
     }
@@ -802,7 +808,7 @@ void SearchContactByName()
 
     FILE *file;
     file = fopen("contacts.txt", "r");
-    while (fscanf(file, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
+    while (fscanf(file, "%s %s %s %s %s %c %s", _contact.firstName, _contact.firstName, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
     {
         if (strcmp(Address, _contact.address) == 0)
         {
@@ -812,7 +818,7 @@ void SearchContactByName()
                 printf("\t\t| ID  | %-35s| %-15s| %-35s| %-35s| %-6s  | %s", "Name", "Phone", "Email", "Address", "Gender", "Profession                  |\n");
                 printf("\t\t|=============================================================================================================================================================================|\n");
             }
-            printf("\t\t| %d   | %-35.25s| %-15.10s| %-35.25s| %-35.20s| %c\t| %.35s \t\t      |\n", counter++, _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
+            printf("\t\t| %d   | %s %-31s| %-15.10s| %-35.25s| %-35.20s| %c\t| %.35s \t\t      |\n", counter++, _contact.firstName, _contact.LastName, _contact.phone, _contact.email, _contact.address, _contact.gender, _contact.profession);
             found++;
         }
     }
@@ -838,24 +844,24 @@ void DisplayAllContacts()
     system("cls");
     int counter = 1;
 
-    printf("\n\n\t\t\t\t    ------------------------------------ \n");
-    printf("\t\t\t\t              Contacts List \n");
-    printf("\t\t\t\t    ------------------------------------ \n\n");
+    printf("\n\n\t\t\t\t\t\t\t\t    ------------------------------------ \n");
+    printf("\t\t\t\t\t\t\t\t              Contacts List \n");
+    printf("\t\t\t\t\t\t\t\t    ------------------------------------ \n\n");
 
     FILE *contactFile;
     contactFile = fopen("contacts.txt", "r");
 
-    if (fscanf(contactFile, "%s %s %s %s %c %s", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
+    if (fscanf(contactFile, "%s %s %s %s %s %c %s", _contact.firstName, _contact.LastName, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF)
     {
         printf("\t\t|=============================================================================================================================================================================|\n");
-        printf("\t\t| ID  | %-35s| %-15s| %-35s| %-35s| %-6s  | %s", "Name", "Phone", "Email", "Address", "Gender", "Profession                  |\n");
+        printf("\t\t| ID  | %-35s| %-15s | %-35s| %-35s| %s  | %s", "Name", "Phone", "Email", "Address", "Gender", "Profession                 |\n");
         printf("\t\t|=============================================================================================================================================================================|\n");
 
         do
         {
-            printf("\t\t| %d   | %-35.30s| %-15.10s| %-35.30s| %-35.30s| %c\t| %.35s \t\t      |\n", counter++, _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession);
+            printf("\t\t| %d   | %.30s %-30.15s| %-15.10s | %-35.30s| %-35.30s| %c\t| %.35s \t\t      |\n", counter++, _contact.firstName, _contact.LastName, _contact.phone, _contact.email, _contact.address, _contact.gender, _contact.profession);
 
-        } while (fscanf(contactFile, "%s %s %s %s %c %s\n", _contact.name, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF);
+        } while (fscanf(contactFile, "%s %s %s %s %s %c %s\n", _contact.firstName, _contact.LastName, _contact.phone, _contact.email, _contact.address, &_contact.gender, _contact.profession) != EOF);
 
         printf("\t\t|=============================================================================================================================================================================| \n\n");
         fclose(contactFile);
@@ -885,7 +891,7 @@ void GetInput(int targetCount, char input[])
     while (i < targetCount - 1)
     {
         c = getche();
-        fflush(stdin);
+
         if (c == ENTER || c == ESCAPE || c == TAB)
         {
             break;
@@ -894,7 +900,7 @@ void GetInput(int targetCount, char input[])
         {
             if (i > 0)
             {
-                printf("\b \b");
+                printf(" \b \b");
                 i--;
             }
         }
@@ -976,7 +982,7 @@ int isValidNumber(char num[])
 
 int isValidGender(char ch)
 {
-    if (ch != 'M' || ch != 'm' || ch != 'F' || ch != 'f' || ch != 'O' || ch != 'o')
+    if (ch != 'M' && ch != 'm' && ch != 'F' && ch != 'f' && ch != 'O' && ch != 'o')
     {
         printf("------------------------------------------\n");
         printf("ERROR: Please Enter Valid Gender.\n");

@@ -1,7 +1,3 @@
-SitaKoirala 9812345678 sita.koirala@example.com Pokhara,Nepal Å Teacher
-HariShrestha 9865432109 hari.shrestha@example.com Lalitpur,Nepal Å Doctor
-GitaThapa 9856789012 gita.thapa@example.com Bhaktapur,Nepal Å Architect
-NabinBhattarai 9845678901 nabin.bhattarai@example.com Biratnagar,Nepal Å Accountant
-AnjuRai 9812345670 anju.rai@example.com Dharan,Nepal Å Nurse
-BinodGhimire 9860123456 binod.ghimire@example.com Butwal,Nepal Å Lawyer
-MinaMaharjan 9854321098 mina.maharjan@example.com Lalitpur,Nepal Å Artist
+test tester 0987654321 test@example.com kathmandu ≥ teacher
+sita karki 1234567890 sita@example.com kathmandu ≥ student
+Ram Dahal 0099887722 ram@yahoo.com dharan ≥ painter
